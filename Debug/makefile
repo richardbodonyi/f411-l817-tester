@@ -9,116 +9,12 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include USB_DEVICE/Target/subdir.mk
+-include USB_DEVICE/App/subdir.mk
+-include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
+-include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
--include Drivers/CMSIS/RTOS2/Template/subdir.mk
--include Drivers/CMSIS/RTOS2/Source/subdir.mk
--include Drivers/CMSIS/NN/Source/SoftmaxFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/SVDFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/ReshapeFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/PoolingFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/NNSupportFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/FullyConnectedFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/ConvolutionFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/ConcatenationFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/BasicMathFunctions/subdir.mk
--include Drivers/CMSIS/NN/Source/ActivationFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/TransformFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/SupportFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/StatisticsFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/SVMFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/QuaternionMathFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/MatrixFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/InterpolationFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/FilteringFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/FastMathFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/DistanceFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/ControllerFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/ComplexMathFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/CommonTables/subdir.mk
--include Drivers/CMSIS/DSP/Source/BayesFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Source/BasicMathFunctions/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_variance_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_svm_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_sin_cos_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_signal_converge_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_matrix_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_linear_interp_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_graphic_equalizer_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fir_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_fft_bin_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_dotproduct_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_convolution_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_class_marks_example/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/RTE/Device/ARMCM7_SP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/RTE/Device/ARMCM55/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/RTE/Device/ARMCM4_FP/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/RTE/Device/ARMCM3/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/RTE/Device/ARMCM0/subdir.mk
--include Drivers/CMSIS/DSP/Examples/ARM/arm_bayes_example/subdir.mk
--include Drivers/CMSIS/DSP/ComputeLibrary/Source/subdir.mk
--include Drivers/CMSIS/DAP/Firmware/Source/subdir.mk
--include Drivers/CMSIS/Core_A/Source/subdir.mk
--include Drivers/CMSIS/Core/Template/ARMv8-M/subdir.mk
+-include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -168,8 +64,8 @@ all: main-build
 main-build: f411-l817-tester.elf secondary-outputs
 
 # Tool invocations
-f411-l817-tester.elf f411-l817-tester.map: $(OBJS) $(USER_OBJS) fail-specified-linker-script-missing makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "f411-l817-tester.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 --specs=nosys.specs -Wl,-Map="f411-l817-tester.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+f411-l817-tester.elf f411-l817-tester.map: $(OBJS) $(USER_OBJS) D:\Projects\stm32\f411-l817-tester\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "f411-l817-tester.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Projects\stm32\f411-l817-tester\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="f411-l817-tester.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
