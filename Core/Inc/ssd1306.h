@@ -16,41 +16,40 @@ _BEGIN_STD_C
 
 #include "ssd1306_conf.h"
 
-
-#if defined(STM32WB)
-#include "stm32wbxx_hal.h"
-#elif defined(STM32F0)
-#include "stm32f0xx_hal.h"
-#elif defined(STM32F1)
-#include "stm32f1xx_hal.h"
-#elif defined(STM32F4)
+//#if defined(STM32WB)
+//#include "stm32wbxx_hal.h"
+//#elif defined(STM32F0)
+//#include "stm32f0xx_hal.h"
+//#elif defined(STM32F1)
+//#include "stm32f1xx_hal.h"
+//#elif defined(STM32F4)
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
-#elif defined(STM32L0)
-#include "stm32l0xx_hal.h"
-#elif defined(STM32L1)
-#include "stm32l1xx_hal.h"
-#elif defined(STM32L4)
-#include "stm32l4xx_hal.h"
-#elif defined(STM32L5)
-#include "stm32l5xx_hal.h"
-#elif defined(STM32F3)
-#include "stm32f3xx_hal.h"
-#elif defined(STM32H7)
-#include "stm32h7xx_hal.h"
-#elif defined(STM32F7)
-#include "stm32f7xx_hal.h"
-#elif defined(STM32G0)
-#include "stm32g0xx_hal.h"
-#elif defined(STM32G4)
-#include "stm32g4xx_hal.h"
-#elif defined(STM32C0)
-#include "stm32c0xx_hal.h"
-#elif defined(STM32U5)
-#include "stm32u5xx_hal.h"
-#else
-#error "SSD1306 library was tested only on STM32F0, STM32F1, STM32F3, STM32F4, STM32F7, STM32L0, STM32L1, STM32L4, STM32H7, STM32G0, STM32G4, STM32WB, STM32C0, STM32U5 MCU families. Please modify ssd1306.h if you know what you are doing. Also please send a pull request if it turns out the library works on other MCU's as well!"
-#endif
+//#elif defined(STM32L0)
+//#include "stm32l0xx_hal.h"
+//#elif defined(STM32L1)
+//#include "stm32l1xx_hal.h"
+//#elif defined(STM32L4)
+//#include "stm32l4xx_hal.h"
+//#elif defined(STM32L5)
+//#include "stm32l5xx_hal.h"
+//#elif defined(STM32F3)
+//#include "stm32f3xx_hal.h"
+//#elif defined(STM32H7)
+//#include "stm32h7xx_hal.h"
+//#elif defined(STM32F7)
+//#include "stm32f7xx_hal.h"
+//#elif defined(STM32G0)
+//#include "stm32g0xx_hal.h"
+//#elif defined(STM32G4)
+//#include "stm32g4xx_hal.h"
+//#elif defined(STM32C0)
+//#include "stm32c0xx_hal.h"
+//#elif defined(STM32U5)
+//#include "stm32u5xx_hal.h"
+//#else
+//#error "SSD1306 library was tested only on STM32F0, STM32F1, STM32F3, STM32F4, STM32F7, STM32L0, STM32L1, STM32L4, STM32H7, STM32G0, STM32G4, STM32WB, STM32C0, STM32U5 MCU families. Please modify ssd1306.h if you know what you are doing. Also please send a pull request if it turns out the library works on other MCU's as well!"
+//#endif
 
 
 #ifdef SSD1306_X_OFFSET

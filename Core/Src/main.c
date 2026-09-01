@@ -51,6 +51,8 @@
 
 /* USER CODE BEGIN PV */
 
+uint16_t adcValues[3];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,9 +106,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, 3);
   while (1)
   {
-	  measure(&htim3, TIM_CHANNEL_1);
+	  measure(&htim3, TIM_CHANNEL_1, adcValues);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
