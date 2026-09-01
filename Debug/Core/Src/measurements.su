@@ -1,3 +1,0 @@
-../Core/Src/measurements.c:22:7:digitalToAnalogValue	16	static
-../Core/Src/measurements.c:26:6:updateDisplay	64	static
-../Core/Src/measurements.c:49:6:measure	80	static
