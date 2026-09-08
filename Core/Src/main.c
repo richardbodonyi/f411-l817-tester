@@ -99,7 +99,6 @@ int main(void)
   MX_ADC1_Init();
   MX_I2C1_Init();
   MX_TIM3_Init();
-  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -110,7 +109,7 @@ int main(void)
   while (1)
   {
 	  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, 3);
-	  measure(&htim1, TIM_CHANNEL_1, adcValues);
+	  measure(&htim3, TIM_CHANNEL_1, adcValues);
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
