@@ -105,6 +105,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   ssd1306_Init();
   while (1)
   {

@@ -60,7 +60,7 @@ void measure(TIM_HandleTypeDef *htim, uint32_t pwmChannel, uint16_t *adcValues) 
 	OptoMetrics metrics;
 	// set A6 PWM output to 50%
 	uint16_t drive = 80; // this is not percentage!
-	HAL_TIM_PWM_Start_DMA(htim, pwmChannel, (uint32_t *)drive, 1);
+	__HAL_TIM_SET_COMPARE(htim, pwmChannel, drive);
 
 	// delay
 	HAL_Delay(200);
