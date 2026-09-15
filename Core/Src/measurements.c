@@ -10,7 +10,7 @@
 const uint8_t INDEX_A1 = 0,
 	INDEX_A2 = 1,
 	INDEX_A3 = 2;
-float VDD = 3.3f, R_K = 55.4, R_C = 99;
+float VDD = 3.3f, R_A = 183, R_C = 99;
 
 typedef struct {
     float Vf;       // Volts
@@ -22,6 +22,7 @@ typedef struct {
     uint8_t ctrPassed;
 	uint8_t vfPassed;
 	uint8_t darkPassed;
+	float VA2;
 } OptoMetrics;
 
 float digitalToAnalogValue(uint16_t value) {
@@ -48,8 +49,9 @@ void updateDisplay(OptoMetrics metrics) {
     ssd1306_SetCursor(0, 32);
     ssd1306_WriteString(buf, Font_7x10, White);
 
-//    uint8_t passed = metrics.ctrPassed && metrics.vfPassed && metrics.darkPassed;
-    snprintf(buf, sizeof(buf), "Dark Vce: %.2fV %s", metrics.Vcedark, failureMark(metrics.darkPassed));
+    uint8_t passed = metrics.ctrPassed && metrics.vfPassed; // && metrics.darkPassed;
+//    snprintf(buf, sizeof(buf), "Dark Vce: %.2fV %s", metrics.Vcedark, failureMark(metrics.darkPassed));
+    snprintf(buf, sizeof(buf), "Pass: %s", passed ? "OK" : "x");
     ssd1306_SetCursor(0, 48);
     ssd1306_WriteString(buf, Font_7x10, White);
 
@@ -59,15 +61,18 @@ void updateDisplay(OptoMetrics metrics) {
 void measure(TIM_HandleTypeDef *htim, uint32_t pwmChannel, uint16_t *adcValues) {
 	OptoMetrics metrics;
 	// set A6 PWM output to 50%
-	uint16_t drive = 80; // this is not percentage!
+
+	uint16_t drive = 21; // 0-399
+//	uint16_t drive = 0;
 	__HAL_TIM_SET_COMPARE(htim, pwmChannel, drive);
 
 	// delay
 	HAL_Delay(200);
 
-	// read A1 (Vk), A2 (Vrk) and A3 (Vce) - convert readings to voltage (uint16_t (0-16xxx) to float (0.000-3.300))
-	float Vk = digitalToAnalogValue(adcValues[INDEX_A2]), Vrk = digitalToAnalogValue(adcValues[INDEX_A3]);
+	// read A1 (Vce), A2 (Vk) and A3 (Vrk) - convert readings to voltage (uint16_t (0-16xxx) to float (0.000-3.300))
+	metrics.Vf = digitalToAnalogValue(adcValues[INDEX_A2]); //, Vrk = digitalToAnalogValue(adcValues[INDEX_A3]);
 	metrics.Vce = digitalToAnalogValue(adcValues[INDEX_A1]);
+//	metrics.VA2 = Vk;
 
 	// calculate Vf = Vdd - Vk, If = (Vk - Vrk) / Rk, Ic = (Vdd - Vce) / Rc, ctr = 100.0 * Ic / If;
 //	metrics.Vf = Vk;
@@ -75,8 +80,12 @@ void measure(TIM_HandleTypeDef *htim, uint32_t pwmChannel, uint16_t *adcValues) 
 //	metrics.Ic = 0;
 //	metrics.CTR = 0;
 
-	metrics.Vf = VDD - Vk;
-	metrics.If = 1000.0 * (Vk - Vrk) / R_K;
+//	metrics.Vf = VDD - Vk;
+//	metrics.If = 1000.0 * (Vk - Vrk) / R_K;
+//	metrics.Ic = 1000.0 * (VDD - metrics.Vce) / R_C;
+//	metrics.CTR = 100.0 * metrics.Ic / metrics.If;
+
+	metrics.If = 1000.0 * (VDD - metrics.Vf) / R_A;
 	metrics.Ic = 1000.0 * (VDD - metrics.Vce) / R_C;
 	metrics.CTR = 100.0 * metrics.Ic / metrics.If;
 
