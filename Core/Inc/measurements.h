@@ -3,6 +3,6 @@
 
 #include "stm32f4xx_hal.h"
 
-void measure(TIM_HandleTypeDef *htim, uint32_t pwmChannel, uint16_t *adcValues);
+void measure(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDef *hadc, uint16_t *adcValues);
 
 #endif /* __MEASUREMENTS_H */

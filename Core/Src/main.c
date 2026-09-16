@@ -21,7 +21,6 @@
 #include "adc.h"
 #include "dma.h"
 #include "i2c.h"
-#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -51,7 +50,7 @@
 
 /* USER CODE BEGIN PV */
 
-uint16_t adcValues[3];
+uint16_t adcValues[4];
 
 /* USER CODE END PV */
 
@@ -98,20 +97,18 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_I2C1_Init();
-  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   ssd1306_Init();
   while (1)
   {
-	  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, 3);
-	  measure(&htim3, TIM_CHANNEL_1, adcValues);
-	  HAL_Delay(1000);
+//	  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, 4);
+	  measure(OP_ON_GPIO_Port, OP_ON_Pin, &hadc1, adcValues);
+	  HAL_Delay(200);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
