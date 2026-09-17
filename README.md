@@ -31,6 +31,8 @@ A simple, open-source hardware tester built around the **STM32F411** microcontro
 
 '[Schematic](f411-l817-tester.png)
 
+<img width="921" height="780" alt="f411-l817-tester" src="f411-l817-tester.png" />
+
 ## Getting Started
 
 1. **Clone the Repository:**
