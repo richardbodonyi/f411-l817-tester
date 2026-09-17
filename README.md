@@ -36,4 +36,4 @@ A simple, open-source hardware tester built around the **STM32F411** microcontro
 
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/richardbodonyi/f411-l817-tester.git](https://github.com/richardbodonyi/f411-l817-tester.git)
+   git clone https://github.com/richardbodonyi/f411-l817-tester.git
