@@ -34,6 +34,11 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+enum Mode {
+	OPTOCOUPLER,
+	REGULATOR
+};
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -51,6 +56,8 @@
 /* USER CODE BEGIN PV */
 
 uint16_t adcValues[4];
+
+enum Mode mode = REGULATOR;
 
 /* USER CODE END PV */
 
@@ -106,9 +113,15 @@ int main(void)
   ssd1306_Init();
   while (1)
   {
-//	  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, 4);
-	  measure(OP_ON_GPIO_Port, OP_ON_Pin, &hadc1, adcValues);
-	  HAL_Delay(200);
+	  if (mode == OPTOCOUPLER) {
+		  measureOptocoupler(OP_ON_GPIO_Port, OP_ON_Pin, &hadc1, adcValues);
+	  	  HAL_Delay(200);
+	  }
+	  else {
+		  measureRegulator(&hadc1, adcValues);
+		  HAL_Delay(800);
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

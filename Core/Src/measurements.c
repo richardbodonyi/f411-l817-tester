@@ -3,30 +3,47 @@
 #include "ssd1306_fonts.h"
 #include <stdio.h>
 
-// TODO include ssd1306.h
-// TODO constants
-// Vdd = 3.3, Rk = 56, Rc = 100
-
 const uint8_t INDEX_A1 = 0,
 	INDEX_A2 = 1,
 	INDEX_A3 = 2,
 	INDEX_A4 = 3;
-const float VDD = 3.3f, R_A = 187, R_C = 99;
 
-//uint16_t adcValues[4];
+const float VDD = 3.3f,
+		R_A = 187,
+		R_C = 99,
+		R1 = 14.98,
+		R2 = 9.97,
+		regulatorRatio = (R1 + R2) / R2;
+
+const char REGULATOR_WITHIN_SPECS[] = "Within specs",
+		REGULATOR_SHORTED[] = "Shorted",
+		REGULATOR_DEGRADED[] = "Degraded";
+
+const char REGULATOR_SUMMARY[2][20] = {"2.45-2.55V in specs", "0-0.7V short"};
+
+enum RegulatorResult {
+	DEGRADED,
+	SHORTED,
+	WITHIN_SPECS
+};
 
 typedef struct {
-    float Vf;       // Volts
+    float Vf;       // V
     float If;       // mA
-    float Vce;      // Volts
+    float Vce;      // V
     float Ic;       // mA
-    float CTR;      // Percentage (%)
-    float Vcedark;  // Volts
+    float CTR;      // %
+    float Vcedark;  // V
     uint8_t ctrPassed;
 	uint8_t vfPassed;
 	uint8_t darkPassed;
 	float Vreg;
-} Metrics;
+} OptocouplerMetrics;
+
+typedef struct {
+	float Vreg;
+	enum RegulatorResult result;
+} RegulatorMetrics;
 
 float digitalToAnalogValue(uint16_t value) {
 	return (value * 3.3f) / 4095.0f;
@@ -36,7 +53,7 @@ char* failureMark(uint8_t passed) {
 	return passed == 1 ? "" : "* ";
 }
 
-void updateDisplay(Metrics metrics) {
+void displayOptocouplerMetrics(OptocouplerMetrics metrics) {
     char buf[32];
     ssd1306_Fill(Black);
 
@@ -54,15 +71,14 @@ void updateDisplay(Metrics metrics) {
 
     // uint8_t passed = metrics.ctrPassed && metrics.vfPassed; // && metrics.darkPassed;
     snprintf(buf, sizeof(buf), "Dark Vce: %.2fV %s", metrics.Vcedark, failureMark(metrics.darkPassed));
-//    snprintf(buf, sizeof(buf), "Pass: %s", passed ? "OK" : "x");
     ssd1306_SetCursor(0, 48);
     ssd1306_WriteString(buf, Font_7x10, White);
 
     ssd1306_UpdateScreen();
 }
 
-void measure(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDef *hadc, uint16_t *adcValues) {
-	Metrics metrics;
+void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDef *hadc, uint16_t *adcValues) {
+	OptocouplerMetrics metrics;
 
 	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
 	HAL_Delay(100);
@@ -101,12 +117,65 @@ void measure(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDef *hadc, ui
 
 	metrics.Vcedark = digitalToAnalogValue(adcValues[INDEX_A1]);
 
-	// Verify darkVce - darkVce > (V_AN * 0.95) -> OK
 	if (metrics.Vcedark > (VDD * 0.95)) {
 		metrics.darkPassed = 1;
 	}
 
-	updateDisplay(metrics);
+	displayOptocouplerMetrics(metrics);
 }
 
+void displayRegulatorMetrics(RegulatorMetrics metrics) {
+    char buf[32];
+    ssd1306_Fill(Black);
+
+    char* status;
+    if (metrics.result == WITHIN_SPECS) {
+    	status = REGULATOR_WITHIN_SPECS;
+    }
+    else if (metrics.result == SHORTED) {
+    	status = REGULATOR_SHORTED;
+    }
+    else {
+    	status = REGULATOR_DEGRADED;
+    }
+
+    snprintf(buf, sizeof(buf), "Vreg: %.2fV", metrics.Vreg);
+    ssd1306_SetCursor(0, 0);
+    ssd1306_WriteString(buf, Font_7x10, White);
+
+	ssd1306_SetCursor(0, 16);
+	ssd1306_WriteString(status, Font_7x10, White);
+
+	for (uint8_t i = 0; i < 2; i++) {
+		ssd1306_SetCursor(0, 32 + i * 16);
+		ssd1306_WriteString((char*) REGULATOR_SUMMARY[i], Font_7x10, White);
+	}
+
+    ssd1306_UpdateScreen();
+}
+
+float convertRegulatorMeasurementToV(float measurement) {
+	return measurement * regulatorRatio;
+}
+
+void measureRegulator(ADC_HandleTypeDef *hadc, uint16_t *adcValues) {
+	HAL_ADC_Start_DMA(hadc, (uint32_t*) adcValues, 4);
+	HAL_Delay(100);
+
+	RegulatorMetrics metrics;
+	metrics.Vreg = convertRegulatorMeasurementToV(digitalToAnalogValue(adcValues[INDEX_A4]));
+//	metrics.Vreg = digitalToAnalogValue(adcValues[INDEX_A4]);
+
+	if (metrics.Vreg <= 0.7) {
+		metrics.result = SHORTED;
+	}
+	else if (metrics.Vreg >= 2.45 && metrics.Vreg <= 2.55) {
+		metrics.result = WITHIN_SPECS;
+	}
+	else {
+		metrics.result = DEGRADED;
+	}
+
+	displayRegulatorMetrics(metrics);
+}
 
