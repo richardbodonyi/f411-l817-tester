@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "dma.h"
 #include "i2c.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -55,9 +56,9 @@ enum Mode {
 
 /* USER CODE BEGIN PV */
 
-uint16_t adcValues[4];
+volatile uint16_t adcValues[ADC_VALUE_COUNT];
 
-enum Mode mode = REGULATOR;
+enum Mode mode = OPTOCOUPLER;
 
 /* USER CODE END PV */
 
@@ -104,6 +105,7 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_I2C1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -111,6 +113,8 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   ssd1306_Init();
+  HAL_TIM_Base_Start(&htim2);
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, ADC_VALUE_COUNT);
   while (1)
   {
 	  if (mode == OPTOCOUPLER) {
@@ -119,7 +123,7 @@ int main(void)
 	  }
 	  else {
 		  measureRegulator(&hadc1, adcValues);
-		  HAL_Delay(800);
+		  HAL_Delay(500);
 	  }
 
     /* USER CODE END WHILE */
@@ -171,6 +175,24 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+    if (GPIO_Pin == GPIO_PIN_0) {
+        static uint32_t lastInterruptTime = 0;
+        uint32_t currentTime = HAL_GetTick();
+
+        // 150ms software debounce lock
+        if (currentTime - lastInterruptTime > 150) {
+            if (mode == OPTOCOUPLER) {
+            	mode = REGULATOR;
+            }
+            else {
+            	mode = OPTOCOUPLER;
+            }
+            lastInterruptTime = currentTime;
+        }
+    }
+}
 
 /* USER CODE END 4 */
 

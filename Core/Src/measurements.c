@@ -54,25 +54,25 @@ char* failureMark(uint8_t passed) {
 }
 
 void displayOptocouplerMetrics(OptocouplerMetrics metrics) {
-    char buf[32];
+    char buffer[32];
     ssd1306_Fill(Black);
 
-    snprintf(buf, sizeof(buf), "Vf:%.2fV %sIf:%.1fmA", metrics.Vf, failureMark(metrics.vfPassed), metrics.If);
+    snprintf(buffer, sizeof(buffer), "Vf:%.2fV %sIf:%.1fmA", metrics.Vf, failureMark(metrics.vfPassed), metrics.If);
     ssd1306_SetCursor(0, 0);
-    ssd1306_WriteString(buf, Font_7x10, White);
+    ssd1306_WriteString(buffer, Font_7x10, White);
 
-    snprintf(buf, sizeof(buf), "Vce:%.2fV Ic:%.1f", metrics.Vce, metrics.Ic);
+    snprintf(buffer, sizeof(buffer), "Vce:%.2fV Ic:%.1f", metrics.Vce, metrics.Ic);
     ssd1306_SetCursor(0, 16);
-    ssd1306_WriteString(buf, Font_7x10, White);
+    ssd1306_WriteString(buffer, Font_7x10, White);
 
-    snprintf(buf, sizeof(buf), "CTR: %.1f %% %s", metrics.CTR, failureMark(metrics.ctrPassed));
+    snprintf(buffer, sizeof(buffer), "CTR: %.1f %% %s", metrics.CTR, failureMark(metrics.ctrPassed));
     ssd1306_SetCursor(0, 32);
-    ssd1306_WriteString(buf, Font_7x10, White);
+    ssd1306_WriteString(buffer, Font_7x10, White);
 
     // uint8_t passed = metrics.ctrPassed && metrics.vfPassed; // && metrics.darkPassed;
-    snprintf(buf, sizeof(buf), "Dark Vce: %.2fV %s", metrics.Vcedark, failureMark(metrics.darkPassed));
+    snprintf(buffer, sizeof(buffer), "Dark Vce: %.2fV %s", metrics.Vcedark, failureMark(metrics.darkPassed));
     ssd1306_SetCursor(0, 48);
-    ssd1306_WriteString(buf, Font_7x10, White);
+    ssd1306_WriteString(buffer, Font_7x10, White);
 
     ssd1306_UpdateScreen();
 }
@@ -81,8 +81,6 @@ void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDe
 	OptocouplerMetrics metrics;
 
 	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
-	HAL_Delay(100);
-	HAL_ADC_Start_DMA(hadc, (uint32_t*) adcValues, 4);
 	HAL_Delay(100);
 
 	float Vk = digitalToAnalogValue(adcValues[INDEX_A2]), Va = digitalToAnalogValue(adcValues[INDEX_A3]);
@@ -112,8 +110,6 @@ void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDe
 	// Dark Leakage Test (Turn OFF LED)
 	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_RESET);
 	HAL_Delay(100);
-	HAL_ADC_Start_DMA(hadc, (uint32_t*) adcValues, 4);
-	HAL_Delay(100);
 
 	metrics.Vcedark = digitalToAnalogValue(adcValues[INDEX_A1]);
 
@@ -125,7 +121,7 @@ void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDe
 }
 
 void displayRegulatorMetrics(RegulatorMetrics metrics) {
-    char buf[32];
+    char buffer[32];
     ssd1306_Fill(Black);
 
     char* status;
@@ -139,9 +135,9 @@ void displayRegulatorMetrics(RegulatorMetrics metrics) {
     	status = REGULATOR_DEGRADED;
     }
 
-    snprintf(buf, sizeof(buf), "Vreg: %.2fV", metrics.Vreg);
+    snprintf(buffer, sizeof(buffer), "Vreg: %.2fV", metrics.Vreg);
     ssd1306_SetCursor(0, 0);
-    ssd1306_WriteString(buf, Font_7x10, White);
+    ssd1306_WriteString(buffer, Font_7x10, White);
 
 	ssd1306_SetCursor(0, 16);
 	ssd1306_WriteString(status, Font_7x10, White);
@@ -159,12 +155,8 @@ float convertRegulatorMeasurementToV(float measurement) {
 }
 
 void measureRegulator(ADC_HandleTypeDef *hadc, uint16_t *adcValues) {
-	HAL_ADC_Start_DMA(hadc, (uint32_t*) adcValues, 4);
-	HAL_Delay(100);
-
 	RegulatorMetrics metrics;
 	metrics.Vreg = convertRegulatorMeasurementToV(digitalToAnalogValue(adcValues[INDEX_A4]));
-//	metrics.Vreg = digitalToAnalogValue(adcValues[INDEX_A4]);
 
 	if (metrics.Vreg <= 0.7) {
 		metrics.result = SHORTED;
