@@ -8,7 +8,7 @@ A simple, open-source hardware tester built around the **STM32F411CEU6** microco
 
 * **PC817 / L817 Optocoupler Testing:** Measures $V_{\text{f}}$, $I_{\text{f}}$, $V_{\text{ce}}$, and $I_{\text{c}}$ to evaluate Current Transfer Ratio (CTR) against a $130\% - 260\%$ standard. Performs dark $V_{\text{ce}}$ leakage tests to verify complete off-state isolation.
 * **TL431 Regulator Testing:** Calculates regulated voltage $V_{\text{reg}}$ via a resistor divider and classifies components into **Within Specs** ($2.45\text{V} - 2.55\text{V}$), **Shorted** ($0\text{V} - 0.7\text{V}$), or **Degraded** states.
-* **User Interface & Mode Selection:** Toggles between Optocoupler and Regulator measurement modes using a physical button tied to EXTI line 0 with a 150 ms software debounce lock.
+* **User Interface & Mode Selection:** Toggles between Optocoupler and Regulator measurement modes using the KEY button of the blackpill.
 * **Real-Time Visual Display:** Displays measurement pass/fail marks and diagnostic stats on a $0.96"$ SSD1306 OLED screen ($128 \times 64$, I2C).
 
 ---
