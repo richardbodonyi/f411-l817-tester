@@ -11,9 +11,9 @@ const uint8_t INDEX_A1 = 0,
 const float VDD = 3.3f,
 		R_A = 187,
 		R_C = 99,
-		R1 = 14.98,
-		R2 = 9.97,
-		regulatorRatio = (R1 + R2) / R2;
+		R5 = 14.98,
+		R6 = 9.97,
+		regulatorRatio = (R5 + R6) / R6;
 
 const char REGULATOR_WITHIN_SPECS[] = "Within specs",
 		REGULATOR_SHORTED[] = "Shorted",
@@ -80,12 +80,20 @@ void displayOptocouplerMetrics(OptocouplerMetrics metrics) {
 void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDef *hadc, uint16_t *adcValues) {
 	OptocouplerMetrics metrics;
 
-	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
-	HAL_Delay(100);
 
-	float Vk = digitalToAnalogValue(adcValues[INDEX_A2]), Va = digitalToAnalogValue(adcValues[INDEX_A3]);
-	metrics.Vce = digitalToAnalogValue(adcValues[INDEX_A1]);
-	metrics.Vreg = digitalToAnalogValue(adcValues[INDEX_A4]);
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
+	HAL_Delay(150);
+
+	uint16_t localAdc[ADC_VALUE_COUNT];
+	__disable_irq();
+	for (int i = 0; i < ADC_VALUE_COUNT; i++) {
+		localAdc[i] = adcValues[i];
+	}
+	__enable_irq();
+
+	float Vk = digitalToAnalogValue(localAdc[INDEX_A2]), Va = digitalToAnalogValue(localAdc[INDEX_A3]);
+	metrics.Vce = digitalToAnalogValue(localAdc[INDEX_A1]);
+	metrics.Vreg = digitalToAnalogValue(localAdc[INDEX_A4]);
 
 	metrics.Vf = Vk - Va;
 	metrics.If = 1000.0 * (VDD - Vk) / R_A;
@@ -109,7 +117,7 @@ void measureOptocoupler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, ADC_HandleTypeDe
 
 	// Dark Leakage Test (Turn OFF LED)
 	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_RESET);
-	HAL_Delay(100);
+	HAL_Delay(150);
 
 	metrics.Vcedark = digitalToAnalogValue(adcValues[INDEX_A1]);
 

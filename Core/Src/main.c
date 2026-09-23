@@ -58,7 +58,7 @@ enum Mode {
 
 volatile uint16_t adcValues[ADC_VALUE_COUNT];
 
-enum Mode mode = OPTOCOUPLER;
+volatile enum Mode mode = OPTOCOUPLER;
 
 /* USER CODE END PV */
 
@@ -112,14 +112,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  ssd1306_Init();
   HAL_TIM_Base_Start(&htim2);
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*) adcValues, ADC_VALUE_COUNT);
+  ssd1306_Init();
   while (1)
   {
 	  if (mode == OPTOCOUPLER) {
 		  measureOptocoupler(OP_ON_GPIO_Port, OP_ON_Pin, &hadc1, adcValues);
-	  	  HAL_Delay(200);
+	  	  HAL_Delay(100);
 	  }
 	  else {
 		  measureRegulator(&hadc1, adcValues);
