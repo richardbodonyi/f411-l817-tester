@@ -48,13 +48,26 @@ A simple, open-source hardware tester built around the **STM32F411CEU6** microco
 ## Getting Started
 
 1. **Clone the Repository:**
+
    ```bash
    git clone https://github.com/richardbodonyi/f411-l817-tester.git
 
-After importing the project make sure the build is configured to support floating point with printf in STM32CubeIDE.
+
+2. **Clone the Repository:**
+
+After importing the project in STM32CubeIDE make sure the build is configured to support floating point with printf in STM32CubeIDE.
 
 <img width="864" height="572" alt="build settings" src="Images/build_settings.png" />
 
+
+3. **Update resistor values**
+
+Update R_A, R_C, R5 and R6 values in Core/Src/measurements.c according to the values of your resistors.
+
+
+4. **Build and deploy**
+
+Compile your project and burn into the controller.
 
 ## Prototype
 
