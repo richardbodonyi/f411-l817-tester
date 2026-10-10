@@ -73,7 +73,7 @@ Update R_A, R_C, R5 and R6 values in Core/Src/measurements.c according to the va
 
 4. **Build and deploy**
 
-Compile your project and burn into the controller.
+Compile your project and upload to the controller.
 
 ## Prototype
 
