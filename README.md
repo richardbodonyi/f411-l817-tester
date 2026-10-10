@@ -15,8 +15,8 @@ A simple, open-source hardware tester built around the **STM32F411CEU6** microco
 
 ## Hardware Specifications
 
-* **Microcontroller:** STM32F411CEU6 (WeAct BlackPill / Custom Board)[cite: 5, 6]
-* **Display:** SSD1306 OLED ($128 \times 64$, I2C1 on PB6/PB7)[cite: 5, 6]
+* **Microcontroller:** STM32F411CEU6 (BlackPill)
+* **Display:** SSD1306 OLED ($128 \times 64$, I2C1 on PB6/PB7)
 * **Measurement Network Constants - adjust to your measured resistor values:**
   * Anode Resistor ($R_2$): $180\,\Omega$
   * Collector Resistor ($R_1$): $100\,\Omega$
@@ -64,6 +64,12 @@ After importing the project in STM32CubeIDE make sure the build is configured to
 
 Update R_A, R_C, R5 and R6 values in Core/Src/measurements.c according to the values of your resistors.
 
+  ```c
+		R_A = 187,
+		R_C = 99,
+		R5 = 14.98,
+		R6 = 9.97,
+  ```
 
 4. **Build and deploy**
 
